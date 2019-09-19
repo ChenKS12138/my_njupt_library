@@ -25,11 +25,23 @@ class Library {
   static const String LOGIN = '$PROTOCOL://$HOST/reader/redr_verify.php';
   // 信息
   static const String INFO = '$PROTOCOL://$HOST/reader/redr_info_rule.php';
+  // 已借图书分类
+  static const String CLASS_SORT =
+      '$PROTOCOL://$HOST/reader/ajax_class_sort.php';
+  // 已借阅按月分类
+  static const String MONTH_SORT =
+      '$PROTOCOL://$HOST/reader/ajax_month_sort.php';
+
+  //已借阅按年分类
+  static const String YEAR_SORT = '$PROTOCOL://$HOST/reader/ajax_year_sort.php';
 
   final String username;
   final String password;
   final Http.Client instance = new Http.Client();
   final Map<String, String> personalInfo = new Map();
+  final Map<String, int> classSort = new Map();
+  final Map<String, int> monthSort = new Map();
+  final Map<String, int> yearSort = new Map();
 
   String loginType;
   String cookie;
@@ -57,7 +69,6 @@ class Library {
     } else {
       return false;
     }
-//    String text = Convert.utf8.decode(response.bodyBytes);
   }
 
   Future<String> getCaptcha() async {
@@ -67,8 +78,6 @@ class Library {
     final String cookie = response.headers['set-cookie'];
     this.cookie = cookie.substring(0, cookie.length - 8);
 
-//    print('captcha');
-//    print(response.headers);
     final Image image = decodeImage(response.bodyBytes);
     final Captcha captcha = new Captcha(image);
     return captcha.toString();
@@ -102,7 +111,6 @@ class Library {
     String Msg =
         mylibMsg.fold("", (previous, current) => previous += current.innerHtml);
     RegExp getNum = new RegExp(r'>\d+<');
-    RegExp getValue = new RegExp(r'[^>]+<$');
     var msgMatch = getNum
         .allMatches(Msg)
         .map((item) => item.group(0))
@@ -151,6 +159,37 @@ class Library {
         tds[28].outerHtml.substring(37, tds[28].outerHtml.length - 5);
     this.personalInfo['serviceFee'] =
         tds[29].outerHtml.substring(38, tds[29].outerHtml.length - 5);
+    print(this.personalInfo);
     return this.personalInfo;
+  }
+
+  Future<Map> getClassSort() async {
+    Http.Response response =
+        await Http.get(Library.CLASS_SORT, headers: this.getHeader());
+    var raw = Convert.json.decode(Convert.utf8.decode(response.bodyBytes));
+    for (var item in raw) {
+      this.classSort[item['legendText']] = item['y'];
+    }
+    return this.classSort;
+  }
+
+  Future<Map> getMonthSort() async {
+    Http.Response response =
+        await Http.get(Library.MONTH_SORT, headers: this.getHeader());
+    var raw = Convert.json.decode(Convert.utf8.decode(response.bodyBytes));
+    for (var item in raw) {
+      this.monthSort[(int.parse(item['month']) + 1).toString()] = item['y'];
+    }
+    return this.monthSort;
+  }
+
+  Future<Map> getYearSort() async {
+    Http.Response response =
+        await Http.get(Library.YEAR_SORT, headers: this.getHeader());
+    var raw = Convert.json.decode(Convert.utf8.decode(response.bodyBytes));
+    for (var item in raw) {
+      this.yearSort[item['label']] = item['y'];
+    }
+    return this.yearSort;
   }
 }
