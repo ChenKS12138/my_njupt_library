@@ -6,5 +6,5 @@ const String password = 'B18030407';
 void main(List<String> args) async {
   Library library = new Library(username, password, LoginType.CARD_ID);
   await library.login();
-  await library.getYearSort();
+  print(await library.getPayment());
 }

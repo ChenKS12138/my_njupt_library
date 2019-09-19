@@ -34,6 +34,12 @@ class Library {
 
   //已借阅按年分类
   static const String YEAR_SORT = '$PROTOCOL://$HOST/reader/ajax_year_sort.php';
+  // 首页
+  static const String INDEX = '$PROTOCOL://$HOST/reader/redr_info.php';
+  // 借阅历史
+  static const String HISTORY = '$PROTOCOL://$HOST/reader/book_hist.php';
+  // 违章缴款
+  static const String PAYMENT = '$PROTOCOL://$HOST/reader/fine_pec.php';
 
   final String username;
   final String password;
@@ -42,6 +48,8 @@ class Library {
   final Map<String, int> classSort = new Map();
   final Map<String, int> monthSort = new Map();
   final Map<String, int> yearSort = new Map();
+  final List<Map<String, String>> history = new List();
+  final List<Map<String, String>> payment = new List();
 
   String loginType;
   String cookie;
@@ -159,7 +167,6 @@ class Library {
         tds[28].outerHtml.substring(37, tds[28].outerHtml.length - 5);
     this.personalInfo['serviceFee'] =
         tds[29].outerHtml.substring(38, tds[29].outerHtml.length - 5);
-    print(this.personalInfo);
     return this.personalInfo;
   }
 
@@ -191,5 +198,66 @@ class Library {
       this.yearSort[item['label']] = item['y'];
     }
     return this.yearSort;
+  }
+
+  Future<String> getRank() async {
+    Http.Response response =
+        await Http.get(Library.INDEX, headers: this.getHeader());
+    Document dom = parse(response.body);
+    String rank = dom.querySelector('.Num').innerHtml;
+    rank = (int.parse(rank.substring(0, rank.length - 1)) / 100).toString();
+    this.personalInfo['rank'] = rank;
+    return rank;
+  }
+
+  Future<List> getHistory() async {
+    Http.Response response = await Http.post(Library.HISTORY,
+        body: {'para_string': 'all', 'topage': '1'}, headers: this.getHeader());
+    final String text = Convert.utf8.decode(response.bodyBytes);
+    Document dom = parse(text);
+    List<Element> tds = dom.querySelectorAll('tr');
+    for (var value in tds) {
+      List<Element> tds = value.querySelectorAll('td');
+      if (tds != null) {
+        Map<String, String> temp = {
+          'id': tds[1].text,
+          'name': tds[2].text,
+          'author': tds[3].text,
+          'borrowDate': tds[4].text,
+          'returnDate': tds[5].text,
+          'place': tds[6].text
+        };
+        this.history.add(temp);
+      }
+    }
+    return this.history;
+  }
+
+  Future<List> getPayment() async {
+    Http.Response response =
+        await Http.get(Library.PAYMENT, headers: this.getHeader());
+    final String text = Convert.utf8.decode(response.bodyBytes);
+    Document dom = parse(text);
+    List<Element> trs = dom.querySelectorAll('tr');
+    trs = trs.sublist(1);
+    for (var value in trs) {
+      List<Element> tds = value.querySelectorAll('td');
+      if (tds != null) {
+        Map<String, String> temp = {
+          'id': tds[0].text,
+          'boodId': tds[1].text,
+          'name': tds[2].text,
+          'author': tds[3].text,
+          'borrowDate': tds[4].text,
+          'returnDate': tds[5].text,
+          'place': tds[6].text,
+          'expectPayment': tds[7].text,
+          'actualPayment': tds[8].text,
+          'status': tds[9].text
+        };
+        this.payment.add(temp);
+      }
+    }
+    return this.payment;
   }
 }
