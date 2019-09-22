@@ -12,9 +12,9 @@ import 'package:html/parser.dart';
 import 'package:http/http.dart' as Http;
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
-import 'package:my_lib/crawler/core/BaseCrawler.dart';
-import 'package:my_lib/crawler/library/captcha.dart';
-import 'package:my_lib/crawler/library/type.dart';
+import 'package:my_njupt_library/crawler/core/BaseCrawler.dart';
+import 'package:my_njupt_library/crawler/library/captcha.dart';
+import 'package:my_njupt_library/crawler/library/type.dart';
 
 export 'type.dart';
 

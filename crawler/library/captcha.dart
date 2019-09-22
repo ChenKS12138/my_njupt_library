@@ -6,7 +6,7 @@
 
 import 'package:image/image.dart';
 import 'package:meta/meta.dart';
-import 'package:my_lib/crawler/library/image_data.dart';
+import 'package:my_njupt_library/crawler/library/image_data.dart';
 
 class Captcha {
   static const int BLACK = 0;

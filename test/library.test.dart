@@ -1,4 +1,4 @@
-import 'package:my_lib/crawler/library/library.dart';
+import 'package:my_njupt_library/crawler/library/library.dart';
 
 const String username = 'B18030407';
 const String password = 'B18030407';

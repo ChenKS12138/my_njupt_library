@@ -1,4 +1,4 @@
-package com.chenks.my_lib
+package com.chenks.my_njupt_library
 
 import android.os.Bundle
 

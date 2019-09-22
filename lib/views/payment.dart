@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_lib/components/paymentItem.dart';
-import 'package:my_lib/store.dart';
+import 'package:my_njupt_library/components/paymentItem.dart';
+import 'package:my_njupt_library/store.dart';
 import 'package:provider/provider.dart';
 
 const String _title = '违章情况';

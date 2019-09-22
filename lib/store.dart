@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_lib/crawler/library/library.dart';
+import 'package:my_njupt_library/crawler/library/library.dart';
 
 class Store with ChangeNotifier {
   Library _library = new Library();

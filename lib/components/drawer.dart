@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_lib/store.dart';
+import 'package:my_njupt_library/store.dart';
 import 'package:provider/provider.dart';
 
 const BASE_PATH = 'lib/assets/icons';
@@ -65,10 +65,10 @@ class MyDrawer extends StatelessWidget {
           this.vefifyLogin(context, '/history');
         }),
         DrawerItem('帮助与反馈', ICON_HELP, (context) {
-          this.vefifyLogin(context, '/help');
+          Navigator.pushNamed(context, '/help');
         }),
         DrawerItem('关于', ICON_ABOUT, (context) {
-          this.vefifyLogin(context, '/about');
+          Navigator.pushNamed(context, '/about');
         })
       ],
       padding: EdgeInsets.zero,
