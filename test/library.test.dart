@@ -4,8 +4,10 @@ const String username = 'B18030407';
 const String password = 'B18030407';
 
 void main(List<String> args) async {
-  Library library = new Library(username, password, LoginType.CARD_ID);
-  await library.login();
-  var a = await Library.search(name: 'javascript', historyCount: '2');
-  print(a);
+  Library library = new Library();
+  library
+    ..setUsername(username)
+    ..setPassword(password);
+  var a = await library.login();
+  print((await library.getHistory()).value);
 }

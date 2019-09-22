@@ -142,7 +142,6 @@ class LibraryPaymentItem {
     return {
       'id': id,
       'bookId': bookId,
-      'name':name,
       'author': author,
       'borrowDate': borrowDate,
       'returnDate': returnDate,

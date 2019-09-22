@@ -50,62 +50,42 @@ class Library extends BaseCrawler {
   //书目详情
   static const String DETAIL = '$PROTOCOL://$HOST/opac/item.php';
 
-  String _username;
-  String _password;
-  bool verify = false;
+  final String _username;
+  final String _password;
+  bool _verify = false;
 
   String _loginType;
 
   Library(
-      {String username, String password, String loginType: LoginType.CARD_ID}) {
-    if (username != null) {
-      this._username = username;
-      this.setUsername(username);
-    }
-    if (password != null) {
-      this._password = password;
-      this.setPassword(password);
+      @required this._username, @required this._password, String loginType) {
+    if (loginType == null) {
+      loginType = LoginType.CARD_ID;
     }
     this._loginType = loginType;
+
     this
       ..setHeaderHost(Library.HOST)
       ..setHeaderOrigin('$PROTOCOL://$HOST')
       ..setHeaderReferer(Library.LOGIN);
   }
 
-  void setUsername(String username) {
-    this._username = username;
-  }
-
-  void setPassword(String password) {
-    this._password = password;
-  }
-
   Future<bool> login() async {
-    if (this.verify) {
+    final String captchaCode = await this._getCaptcha();
+    final Map<String, String> data = {
+      'number': this._username,
+      'passwd': this._password,
+      'captcha': captchaCode,
+      'select': this._loginType,
+      'returnUrl': ''
+    };
+    Http.Response response = await instance.post(Library.LOGIN,
+        body: data, headers: this.getHeader());
+    if (response.statusCode == 302) {
+      this._verify = true;
       return true;
     } else {
-      try {
-        final String captchaCode = await this._getCaptcha();
-        final Map<String, String> data = {
-          'number': this._username,
-          'passwd': this._password,
-          'captcha': captchaCode,
-          'select': this._loginType,
-          'returnUrl': ''
-        };
-        Http.Response response = await instance.post(Library.LOGIN,
-            body: data, headers: this.getHeader());
-        if (response.statusCode == 302) {
-          this.verify = true;
-          return true;
-        } else {
-          this.verify = false;
-          return false;
-        }
-      } catch (e) {
-        return false;
-      }
+      this._verify = false;
+      return false;
     }
   }
 
@@ -122,7 +102,7 @@ class Library extends BaseCrawler {
   }
 
   Future<Map<String, int>> getClassSort() async {
-    if (this.verify) {
+    if (this._verify) {
       Http.Response response =
           await Http.get(Library.CLASS_SORT, headers: this.getHeader());
       var raw = jsonDecode(utf8decode(response.bodyBytes));
@@ -141,7 +121,7 @@ class Library extends BaseCrawler {
   }
 
   Future<Map<String, int>> getMonthSort() async {
-    if (this.verify) {
+    if (this._verify) {
       Http.Response response =
           await Http.get(Library.MONTH_SORT, headers: this.getHeader());
       var raw = jsonDecode(utf8decode(response.bodyBytes));
@@ -160,7 +140,7 @@ class Library extends BaseCrawler {
   }
 
   Future<Map<String, int>> getYearSort() async {
-    if (this.verify) {
+    if (this._verify) {
       Http.Response response =
           await Http.get(Library.YEAR_SORT, headers: this.getHeader());
       var raw = jsonDecode(utf8decode(response.bodyBytes));
@@ -179,7 +159,7 @@ class Library extends BaseCrawler {
   }
 
   Future<String> getRank() async {
-    if (this.verify) {
+    if (this._verify) {
       Http.Response response =
           await Http.get(Library.INDEX, headers: this.getHeader());
       Document dom = parse(response.body);
@@ -192,7 +172,7 @@ class Library extends BaseCrawler {
   }
 
   Future<LibraryHistory> getHistory() async {
-    if (this.verify) {
+    if (this._verify) {
       Http.Response response = await Http.post(Library.HISTORY,
           body: {'para_string': 'all', 'topage': '1'},
           headers: this.getHeader());
@@ -201,7 +181,6 @@ class Library extends BaseCrawler {
       List<Element> trs = dom.querySelectorAll('tr');
       List<LibraryHistoryItem> historyResult = new List();
       if (trs != null) {
-        trs = trs.sublist(1).toList();
         for (var value in trs) {
           List<Element> tds = value.querySelectorAll('td');
           if (tds != null) {
@@ -213,9 +192,9 @@ class Library extends BaseCrawler {
                 tds[5].text,
                 tds[6].text);
             historyResult.add(temp);
+            return new LibraryHistory(historyResult);
           }
         }
-        return new LibraryHistory(historyResult);
       } else {
         return null;
       }
@@ -225,7 +204,7 @@ class Library extends BaseCrawler {
   }
 
   Future<LibraryPayment> getPayment() async {
-    if (this.verify) {
+    if (this._verify) {
       Http.Response response =
           await Http.get(Library.PAYMENT, headers: this.getHeader());
       final String text = utf8decode(response.bodyBytes);
@@ -261,7 +240,7 @@ class Library extends BaseCrawler {
   }
 
   Future getInfo() async {
-    if (this.verify) {
+    if (this._verify) {
       final Http.Response response =
           await instance.get(Library.INFO, headers: this.getHeader());
       String text = utf8decode(response.bodyBytes);
@@ -373,11 +352,11 @@ class Library extends BaseCrawler {
       for (var value in trs) {
         var tds = value.querySelectorAll('td');
         LibraryRecommendItem temp = new LibraryRecommendItem(
+            tds[0].text,
             tds[1].text,
             tds[2].text,
             tds[3].text,
             tds[4].text,
-            tds[0].text,
             tds[5].text,
             tds[6].text,
             value.querySelector('a').attributes['href'].split('=')[1]);
@@ -425,7 +404,6 @@ class Library extends BaseCrawler {
           break;
       }
     }
-    return new LibraryDetail(temp['press'], temp['callNumber'], temp['size'],
-        temp['name'], temp['author'], temp['summary']);
+    return new LibraryDetail(temp['press'], temp['callNumber'], temp['size'], temp['name'], temp['author'], temp['summary']);
   }
 }
