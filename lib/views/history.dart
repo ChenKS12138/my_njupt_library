@@ -23,7 +23,6 @@ class _History extends State<History> {
   Widget build(BuildContext context) {
     Widget _body;
     List history = Provider.of<Store>(context).history;
-    print(history);
     if (this.showLoading) {
       _body = Center(
         heightFactor: 12,
@@ -33,29 +32,45 @@ class _History extends State<History> {
         ),
       );
     } else {
-      _body = Center(
-        child: ListView(
-          children: <Widget>[
-            SizedBox(
-              height: 15,
-            ),
-            Center(
-              child: Text(
-                '借阅历史',
-                style: TextStyle(fontSize: 25),
+      if (history != null) {
+        _body = Center(
+          child: ListView(
+            children: <Widget>[
+              SizedBox(
+                height: 15,
               ),
+              Center(
+                child: Text(
+                  '借阅历史',
+                  style: TextStyle(fontSize: 25),
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              ...history.map((item) => new HistoryItem(item.id, item.name,
+                  item.author, item.borrowDate, item.returnDate, item.place)),
+              SizedBox(
+                height: 20,
+              )
+            ],
+          ),
+        );
+      } else {
+        _body = Center(
+          child: Container(
+            child: new Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  '暂无借阅数据',
+                  style: TextStyle(fontSize: 18),
+                ),
+              ],
             ),
-            SizedBox(
-              height: 15,
-            ),
-            ...history.map((item) => new HistoryItem(item.id, item.name,
-                item.author, item.borrowDate, item.returnDate, item.place)),
-            SizedBox(
-              height: 20,
-            )
-          ],
-        ),
-      );
+          ),
+        );
+      }
     }
 
     return new Scaffold(

@@ -21,15 +21,18 @@ class Store with ChangeNotifier {
     _library
       ..setUsername(username)
       ..setPassword(password);
-    bool success = await _library.login();
-    if (success) {
-      this._personalInfo = await _library.getInfo();
-      this._payment = await _library.getPayment();
-      this._history = await _library.getHistory();
-      print(this._history.value);
-      this._rank = await _library.getRank();
+    try {
+      bool success = await _library.login();
+      if (success) {
+        this._personalInfo = await _library.getInfo();
+        this._payment = await _library.getPayment();
+        this._history = await _library.getHistory();
+        this._rank = await _library.getRank();
+      }
+      return success;
+    } catch (e) {
+      print(e);
+      return false;
     }
-
-    return success;
   }
 }

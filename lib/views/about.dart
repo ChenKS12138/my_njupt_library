@@ -5,6 +5,9 @@ const String _title = '关于';
 final Widget _body = Center(
   child: Column(
     children: <Widget>[
+      Padding(
+        padding: EdgeInsets.only(top: 40),
+      ),
       Container(
           width: 180,
           height: 180,
@@ -13,21 +16,22 @@ final Widget _body = Center(
         padding: EdgeInsets.only(top: 30),
       ),
       Text(
-        'My Library',
-        style: TextStyle(fontSize: 28),
+        'My NJUPT Library',
+        style: TextStyle(fontSize: 24),
       ),
       Padding(
-        padding: EdgeInsets.only(top: 20),
+        padding: EdgeInsets.only(top: 60),
       ),
-      Text('这是个flutter的demo，用于交流学习'),
+      Text('Build on Flutter'),
       Padding(
         padding: EdgeInsets.only(top: 16),
       ),
-      Container(
-        child: Image.asset('lib/assets/images/github.png'),
-        width: 80,
-        height: 80,
-      )
+
+//      Container(
+//        child: Image.asset('lib/assets/images/github.png'),
+//        width: 80,
+//        height: 80,
+//      )
     ],
   ),
 );

@@ -200,7 +200,7 @@ class Library extends BaseCrawler {
       Document dom = parse(text);
       List<Element> trs = dom.querySelectorAll('tr');
       List<LibraryHistoryItem> historyResult = new List();
-      if (trs != null) {
+      if (trs != null && trs.length > 1) {
         trs = trs.sublist(1).toList();
         for (var value in trs) {
           List<Element> tds = value.querySelectorAll('td');
