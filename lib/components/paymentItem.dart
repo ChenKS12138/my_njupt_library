@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:my_njupt_library/components/common/CommonItemsConstructor.dart';
 
 class PaymentItem extends StatelessWidget {
-  String id;
-  String bookId;
-  String name;
-  String author;
-  String borrowDate;
-  String returnDate;
-  String place;
-  String expectPayment;
-  String actualPayment;
-  String status;
+  Map<String, String> items = new Map();
   PaymentItem(
-      this.id,
-      this.bookId,
-      this.name,
-      this.author,
-      this.borrowDate,
-      this.returnDate,
-      this.place,
-      this.expectPayment,
-      this.actualPayment,
-      this.status);
+    String id,
+    String bookId,
+    String name,
+    String author,
+    String borrowDate,
+    String returnDate,
+    String place,
+    String expectPayment,
+    String actualPayment,
+    String status,
+  ) {
+    items['书名'] = name;
+    items['作者'] = author;
+    items['借阅时间'] = borrowDate;
+    items['归还时间'] = returnDate;
+    items['位置'] = place;
+    items['应缴费用'] = expectPayment;
+    items['实际缴纳'] = actualPayment;
+    items['状态'] = status;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,47 +33,7 @@ class PaymentItem extends StatelessWidget {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(14.0))),
         child: Column(
-          children: <Widget>[
-            ListTile(
-              leading: Text('书名'),
-              title: Text(this.name),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('作者'),
-              title: Text(this.author),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('借阅时间'),
-              title: Text(this.borrowDate),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('归还时间'),
-              title: Text(this.returnDate),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('位置'),
-              title: Text(this.place),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('应缴费用'),
-              title: Text(this.expectPayment),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('实际缴纳'),
-              title: Text(this.actualPayment),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('状态'),
-              title: Text(this.status),
-            )
-          ],
+          children: CommonItemsConstructor(this.items)
         ),
       ),
     );

@@ -57,7 +57,9 @@ class Library extends BaseCrawler {
   String _loginType;
 
   Library(
-      {String username, String password, String loginType: LoginType.CARD_ID}) {
+      {String username,
+      String password,
+      String loginType: LoginType.STUDENT_ID}) {
     if (username != null) {
       this._username = username;
       this.setUsername(username);

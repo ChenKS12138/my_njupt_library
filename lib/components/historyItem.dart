@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
+import 'common/CommonItemsConstructor.dart';
+
 class HistoryItem extends StatelessWidget {
-  String id;
-  String name;
-  String author;
-  String borrowDate;
-  String returnDate;
-  String place;
-  HistoryItem(this.id, this.name, this.author, this.borrowDate, this.returnDate,
-      this.place);
+  Map<String, String> items = new Map();
+  HistoryItem(String id, String name, String author, String borrowDate,
+      String returnDate, String place) {
+    items['书名'] = name;
+    items['作者'] = author;
+    items['借阅时间'] = borrowDate;
+    items['归还时间'] = returnDate;
+    items['地点'] = place;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,32 +21,7 @@ class HistoryItem extends StatelessWidget {
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(14.0))),
         child: Column(
-          children: <Widget>[
-            ListTile(
-              leading: Text('书名'),
-              title: Text(this.name),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('作者'),
-              title: Text(this.author),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('借阅时间'),
-              title: Text(this.borrowDate),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('归还时间'),
-              title: Text(this.returnDate),
-            ),
-            Divider(),
-            ListTile(
-              leading: Text('地点'),
-              title: Text(this.place),
-            ),
-          ],
+          children: CommonItemsConstructor(this.items),
         ),
       ),
     );
