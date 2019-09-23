@@ -15,6 +15,7 @@ class Store with ChangeNotifier {
   get studentId => _personalInfo?.studentID;
   get payment => _payment?.value;
   get history => _history?.value;
+  get rank => _rank;
 
   Future<bool> login(String username, String password) async {
     _library

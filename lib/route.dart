@@ -6,6 +6,7 @@ import './views/history.dart';
 import './views/index.dart';
 import './views/login.dart';
 import './views/payment.dart';
+import './views/personal.dart';
 import './views/search.dart';
 
 Map<String, Widget Function(BuildContext)> route = {
@@ -15,5 +16,6 @@ Map<String, Widget Function(BuildContext)> route = {
   '/history': (context) => new History(),
   '/help': (context) => new Help(),
   '/about': (context) => new About(),
-  '/login': (context) => new Login()
+  '/login': (context) => new Login(),
+  '/personal': (context) => new Personal()
 };

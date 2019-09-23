@@ -46,11 +46,14 @@ class MyDrawer extends StatelessWidget {
       children: <Widget>[
         UserAccountsDrawerHeader(
           accountName: Text(Provider.of<Store>(context).studentId ?? '点击登录'),
-          currentAccountPicture: Image.asset('lib/assets/icons/n.png'),
+          currentAccountPicture:
+              CircleAvatar(child: Image.asset('lib/assets/icons/n.png')),
           accountEmail: Text(Provider.of<Store>(context).username ?? '请先登录'),
           onDetailsPressed: () {
             if (!Provider.of<Store>(context).vefiry) {
               Navigator.pushNamed(context, '/login');
+            } else {
+              this.vefifyLogin(context, '/personal');
             }
           },
         ),
