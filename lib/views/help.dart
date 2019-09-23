@@ -16,7 +16,7 @@ final Widget _body = Center(
       padding: EdgeInsets.only(top: 20),
     ),
     Text(
-      '我的推荐是自己修',
+      '我推荐自己修,然后提PR',
       style: TextStyle(fontSize: 18),
     )
   ],
