@@ -8,10 +8,12 @@ void main(List<String> args) async {
   library
     ..setUsername(username)
     ..setPassword(password);
-  bool success = await library.login();
-  print(await library.getInfo());
-  print(await library.getPayment());
-  print(await library.getHistory());
-  print(await library.getRank());
-  print(success);
+  // bool success = await library.login();
+  // print(await library.getInfo());
+  // print(await library.getPayment());
+  // print(await library.getHistory());
+  // print(await library.getRank());
+  // print(success);
+  // LibrarySearch search =await  Library.search(name: 'javascript');
+  // print(search);
 }

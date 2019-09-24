@@ -142,7 +142,7 @@ class LibraryPaymentItem {
     return {
       'id': id,
       'bookId': bookId,
-      'name':name,
+      'name': name,
       'author': author,
       'borrowDate': borrowDate,
       'returnDate': returnDate,
@@ -191,7 +191,7 @@ class LibrarySearch {
   @override
   String toString() {
     return {
-      'value': value.toString(),
+      'value': 'Instance of LibrarySearchItem',
       'allCount': allCount.toString(),
       'pageCount': pageCount.toString(),
       'historyCount': historyCount.toString(),
