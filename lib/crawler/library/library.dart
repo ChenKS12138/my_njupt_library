@@ -21,34 +21,35 @@ export 'type.dart';
 class Library extends BaseCrawler {
   static const String HOST = '202.119.228.6:8080';
   static const String PROTOCOL = 'http';
+  static const String BASE_URL = 'http://202.119.228.6:8080';
   // 验证码
   static const String CAPTCHA =
-      '$PROTOCOL://$HOST/reader/captcha.php?0.2226025362345463';
+      '$BASE_URL/reader/captcha.php?0.2226025362345463';
   // 登录
-  static const String LOGIN = '$PROTOCOL://$HOST/reader/redr_verify.php';
+  static const String LOGIN = '$BASE_URL/reader/redr_verify.php';
   // 信息
-  static const String INFO = '$PROTOCOL://$HOST/reader/redr_info_rule.php';
+  static const String INFO = '$BASE_URL/reader/redr_info_rule.php';
   // 已借图书分类
   static const String CLASS_SORT =
-      '$PROTOCOL://$HOST/reader/ajax_class_sort.php';
+      '$BASE_URL/reader/ajax_class_sort.php';
   // 已借阅按月分类
   static const String MONTH_SORT =
-      '$PROTOCOL://$HOST/reader/ajax_month_sort.php';
+      '$BASE_URL/reader/ajax_month_sort.php';
 
   //已借阅按年分类
-  static const String YEAR_SORT = '$PROTOCOL://$HOST/reader/ajax_year_sort.php';
+  static const String YEAR_SORT = '$BASE_URL/reader/ajax_year_sort.php';
   // 首页
-  static const String INDEX = '$PROTOCOL://$HOST/reader/redr_info.php';
+  static const String INDEX = '$BASE_URL/reader/redr_info.php';
   // 借阅历史
-  static const String HISTORY = '$PROTOCOL://$HOST/reader/book_hist.php';
+  static const String HISTORY = '$BASE_URL/reader/book_hist.php';
   // 违章缴款
-  static const String PAYMENT = '$PROTOCOL://$HOST/reader/fine_pec.php';
+  static const String PAYMENT = '$BASE_URL/reader/fine_pec.php';
   // 搜索书目
-  static const String SEARCH = '$PROTOCOL://$HOST/opac/openlink.php';
+  static const String SEARCH = '$BASE_URL/opac/openlink.php';
   // 推荐书目
-  static const String RECOMMEND = '$PROTOCOL://$HOST/top/top_lend.php';
+  static const String RECOMMEND = '$BASE_URL/top/top_lend.php';
   //书目详情
-  static const String DETAIL = '$PROTOCOL://$HOST/opac/item.php';
+  static const String DETAIL = '$BASE_URL/opac/item.php';
 
   String _username;
   String _password;
@@ -71,7 +72,7 @@ class Library extends BaseCrawler {
     this._loginType = loginType;
     this
       ..setHeaderHost(Library.HOST)
-      ..setHeaderOrigin('$PROTOCOL://$HOST')
+      ..setHeaderOrigin(BASE_URL)
       ..setHeaderReferer(Library.LOGIN);
   }
 
@@ -397,7 +398,7 @@ class Library extends BaseCrawler {
     Document dom = parse(utf8decode(response.bodyBytes));
     String href =
         dom.querySelector('#tabs1').querySelectorAll('a')[1].attributes['href'];
-    Http.Response response2 = await Http.get('$PROTOCOL://$HOST/opac/$href');
+    Http.Response response2 = await Http.get('$BASE_URL/opac/$href');
 
     Document dom2 = parse(utf8decode(response2.bodyBytes));
     List<Element> lis = dom2.querySelectorAll('li');
