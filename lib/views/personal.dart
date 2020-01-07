@@ -90,9 +90,23 @@ class _Personal extends State<Personal> {
                 ),
               ),
             ),
+            Container(
+              child: RaisedButton(
+                child: Text(
+                  '取消登陆',
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                color: Colors.redAccent,
+                onPressed: () async {
+                  await Provider.of<Store>(context).logout();
+                  Navigator.pop(context);
+                },
+              ),
+              padding: EdgeInsets.only(left: 30, right: 30),
+            ),
             SizedBox(
               height: 20,
-            )
+            ),
           ],
         ),
       ),

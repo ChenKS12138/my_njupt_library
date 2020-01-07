@@ -35,4 +35,12 @@ class Store with ChangeNotifier {
       return false;
     }
   }
+
+  Future<bool> logout() async {
+    _library = new Library();
+    _personalInfo = null;
+    _payment = null;
+    _history = null;
+    _rank = null;
+  }
 }
