@@ -41,11 +41,10 @@ class _IndexState extends State<Index> {
             SizedBox(
               height: 15,
             ),
-            ...this.recommend.value.sublist(1, 10).map((item) =>
-                new RecommendItem(
-                    item.name, item.author, item.press, item.callNumber)),
+            ...this.recommend.value.map((item) => new RecommendItem(
+                item.name, item.author, item.press, item.callNumber)),
             SizedBox(
-              height: 20,
+              height: 30,
             )
           ],
         ),
