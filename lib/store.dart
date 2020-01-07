@@ -21,6 +21,18 @@ class Store with ChangeNotifier {
     _library
       ..setUsername(username)
       ..setPassword(password);
+    return await syncData();
+  }
+
+  Future<bool> logout() async {
+    _library = new Library();
+    _personalInfo = null;
+    _payment = null;
+    _history = null;
+    _rank = null;
+  }
+
+  Future<bool> syncData() async {
     try {
       bool success = await _library.login();
       if (success) {
@@ -34,13 +46,5 @@ class Store with ChangeNotifier {
       print(e);
       return false;
     }
-  }
-
-  Future<bool> logout() async {
-    _library = new Library();
-    _personalInfo = null;
-    _payment = null;
-    _history = null;
-    _rank = null;
   }
 }
